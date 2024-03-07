@@ -13,6 +13,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -23,9 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserServiceImpl {
 
     private final UserInterface userInterface;
-
     private final PasswordEncoder passwordEncoder;
-
 
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -34,8 +33,6 @@ public class UserServiceImpl {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
     }
-
-
 
     public User saveUser(User User) {
 
@@ -72,7 +69,7 @@ public class UserServiceImpl {
         // Check if all required character types are present
         return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
     }
-    public User existsByEmail(String email) {
+    public Optional<User> existsByEmail(String email) {
         return userInterface.findByEmail(email);
     }
     public String changePassword(ChangePasswordRequest request, Principal connectedUser) {

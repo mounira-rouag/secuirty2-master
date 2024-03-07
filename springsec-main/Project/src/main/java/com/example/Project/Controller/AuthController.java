@@ -54,7 +54,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-     private  final  UserServiceImpl userServiceImpl;
+    private final UserServiceImpl userServiceImpl;
 
     public AuthController(UserServiceImpl userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
@@ -81,7 +81,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser( @RequestBody @NotNull SignupRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody @NotNull SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -92,8 +92,8 @@ public class AuthController {
         if (!userServiceImpl.validatePassword(signUpRequest.getPassword())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Password does not meet security requirements"));
         }
-        if( !userServiceImpl.validateEmailForDomain(signUpRequest.getEmail())){
-            return  ResponseEntity.badRequest().body(new MessageResponse("domaine name not supported "));
+        if (!userServiceImpl.validateEmailForDomain(signUpRequest.getEmail())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("domaine name not supported "));
         }
 
 
@@ -112,7 +112,7 @@ public class AuthController {
                 signUpRequest.getLastname(),
                 signUpRequest.getFirstname(),
                 signUpRequest.getSite()
-               );
+        );
 
         List<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
@@ -145,14 +145,14 @@ public class AuthController {
 
         // Send signup email to user with password change link
         /**
-        String to = signUpRequest.getEmail();
-        String subject = "Welcome to Our Platform!";
-        String body = "Dear " + signUpRequest.getUsername() + ",\n\n"
-                + "Thank you for signing up to our platform. We're excited to have you on board!\n\n"
-                + "To complete your registration, please click on the following link to set your password:\n"
-                + "http://yourdomain.com/reset-password?email=" + signUpRequest.getEmail();
+         String to = signUpRequest.getEmail();
+         String subject = "Welcome to Our Platform!";
+         String body = "Dear " + signUpRequest.getUsername() + ",\n\n"
+         + "Thank you for signing up to our platform. We're excited to have you on board!\n\n"
+         + "To complete your registration, please click on the following link to set your password:\n"
+         + "http://yourdomain.com/reset-password?email=" + signUpRequest.getEmail();
 
-        sendingEmailService.sendEmail(to, subject, body);*/
+         sendingEmailService.sendEmail(to, subject, body);*/
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
@@ -166,7 +166,7 @@ public class AuthController {
         // Optionally, perform any additional logout logic such as clearing authentication tokens or session data
 
         // Return a response indicating successful logout
-        return ResponseEntity.status(HttpStatus.OK).body("Logout successful");
-    }
+        return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("user loged out "));
 
+    }
 }

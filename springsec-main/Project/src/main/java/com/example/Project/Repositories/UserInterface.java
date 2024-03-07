@@ -16,8 +16,8 @@ public interface UserInterface extends JpaRepository<User, Integer> {
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);
-    @Query("SELECT * FROM User u WHERE u.email LIKE :cle%")
-    User findByEmail(String email);
+    @Query("SELECT u FROM User u WHERE u.email =:email")
+    Optional<User> findByEmail(@Param("email") String email);
     @Query("SELECT u FROM User u JOIN FETCH u.roles WHERE u.username = :username")
     Optional<User> findByUsernameWithRoles(@Param("username") String username);
 }

@@ -17,8 +17,8 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-     private final UserServiceImpl userServiceImp ;
-     private final UserInterface userRepository;
+    private final UserServiceImpl userServiceImp;
+    private final UserInterface userRepository;
 
     public UserController(UserServiceImpl userServiceImp, UserInterface userRepository, UserInterface userRepository1) {
         this.userServiceImp = userServiceImp;
@@ -26,7 +26,7 @@ public class UserController {
         this.userRepository = userRepository1;
     }
 
-    @PatchMapping( "/change-password")
+    @PatchMapping("/change-password")
     public ResponseEntity<?> changePassword(
             @RequestBody ChangePasswordRequest request,
             Principal connectedUser
@@ -37,17 +37,17 @@ public class UserController {
         } catch (IllegalStateException e) {
             // Handle the exception and return an appropriate error response
             return ResponseEntity.badRequest().body("Passwords do not match"); // Or a more user-friendly message
-        }}
-
-    @PostMapping("/findemail")
-    public String verifyEmail(@RequestBody String email) {
-        if (userServiceImp.existsByEmail(email).getEmail()==null){
-            return ("email does not exist ");
-        } else {
-            return ("email exist ");
         }
     }
 
+    @PostMapping("/findemail")
+    public ResponseEntity<?> verifyEmail(@RequestParam String email) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            return ResponseEntity.ok().body(new MessageResponse("email exist "));
+        } else {
+           return  ResponseEntity.badRequest().body(new MessageResponse("email does not exist "));
+        }
+    }
     @GetMapping( value="/emails") // Assuming public access for demonstration
     public ResponseEntity<List<String>> getAllEmails() {
         List<String> emailList = userServiceImp.findAllEmails();
