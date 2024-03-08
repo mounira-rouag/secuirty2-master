@@ -38,6 +38,18 @@ public class UserServiceImpl {
 
         return userInterface.save(User);
     }
+    public User updateUser(User user,Integer id){
+        User u=userInterface.findById(id).get();
+        u.setEmail(user.getEmail());
+        u.setId(user.getId());
+        u.setRoles(user.getRoles());
+        u.setFirstname(user.getFirstname());
+        u.setLastname(user.getLastname());
+
+
+return userInterface.save(u);
+
+    }
     public boolean validateEmailForDomain(String email) {
         // Enhanced regular expression for email format validation
         Pattern emailPattern = Pattern.compile("^([\\w!#$%&'*+/=?^`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^`{|}~-]+)*)@(actia-engineering.tn)$", Pattern.CASE_INSENSITIVE);

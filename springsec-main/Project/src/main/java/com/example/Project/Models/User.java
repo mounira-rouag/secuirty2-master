@@ -33,6 +33,7 @@ public class User {
     private String email;
 @Column(name = "`IdSite`")
     private int site;
+    @Column(name = "`Profil`")
 private String Profile;
     private String password;
 

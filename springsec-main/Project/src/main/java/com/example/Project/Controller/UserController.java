@@ -1,5 +1,6 @@
 package com.example.Project.Controller;
 
+import com.example.Project.Models.User;
 import com.example.Project.Repositories.UserInterface;
 import com.example.Project.Request.ChangePasswordRequest;
 import com.example.Project.Request.MessageResponse;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-//@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -57,6 +58,11 @@ public class UserController {
         return ResponseEntity.ok(emailList); // Return 200 OK with email list
     }
     /**updating a user accesible only by admin */
+    @PutMapping(value="/updateuser/{id}")
+    public ResponseEntity<?> updateuser(@RequestBody User user , @PathVariable int id){
+        userServiceImp.updateUser(user,id);
+        return ResponseEntity.ok().body(new MessageResponse("user updated"));
+    }
 
 
 }
