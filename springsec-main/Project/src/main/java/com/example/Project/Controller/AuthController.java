@@ -116,6 +116,7 @@ public class AuthController {
 
         List<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
+
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -127,16 +128,36 @@ public class AuthController {
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
+                        user.setProfile("admin");
                         break;
-                    case "mod":
+                    case "rc":
                         Role modRole = roleRepository.findByName(ERole.ROLE_RC)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
+                        user.setProfile("rc");
+                        break;
+                    case "rc+":
+                        Role rcRole = roleRepository.findByName(ERole.ROLE_RCPlus)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(rcRole);
+                        break;
+                    case "quality":
+                        Role qaRole = roleRepository.findByName(ERole.ROLE_QUALITE_FILIALE)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(qaRole);
+                        user.setProfile("quality");
+                        break;
+                    case "rspouvoir":
+                        Role rspouvoirRole = roleRepository.findByName(ERole.ROLE_RSPOUVOIR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(rspouvoirRole);
+                        user.setProfile("rspouvoir");
                         break;
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
+
                 }
             });
         }
@@ -144,20 +165,19 @@ public class AuthController {
         userServiceImpl.saveUser(user);
 
         // Send signup email to user with password change link
-        /**
-         String to = signUpRequest.getEmail();
-         String subject = "Welcome to Our Platform!";
-         String body = "Dear " + signUpRequest.getUsername() + ",\n\n"
-         + "Thank you for signing up to our platform. We're excited to have you on board!\n\n"
-         + "To complete your registration, please click on the following link to set your password:\n"
-         + "http://yourdomain.com/reset-password?email=" + signUpRequest.getEmail();
 
-         sendingEmailService.sendEmail(to, subject, body);*/
+        String to = signUpRequest.getEmail();
+        String subject = "Welcome to Our Platform!";
+        String body = "Dear " + signUpRequest.getUsername() + ",\n\n"
+                + "Thank you for signing up to our platform. We're excited to have you on board!\n\n"
+                + "To complete your registration, please click on the following link to set your password:\n"
+                + "http://yourdomain.com/reset-password?email=" + signUpRequest.getEmail();
+
+        sendingEmailService.sendEmail(to, subject, body);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
     }
-
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
         // Invalidate the current session
