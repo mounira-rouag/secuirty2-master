@@ -1,5 +1,6 @@
 package com.example.Project.Controller;
 
+import com.example.Project.Models.Sites;
 import com.example.Project.Models.User;
 import com.example.Project.Repositories.UserInterface;
 import com.example.Project.Request.ChangePasswordRequest;
@@ -64,5 +65,8 @@ public class UserController {
         return ResponseEntity.ok().body(new MessageResponse("user updated"));
     }
 
-
+    @GetMapping("/find-all")
+    public List<User> getAllUsers() {
+        return userRepository.findAllByProfile("rc");
+    }
 }

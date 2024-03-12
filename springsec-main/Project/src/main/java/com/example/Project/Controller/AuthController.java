@@ -92,9 +92,10 @@ public class AuthController {
         if (!userServiceImpl.validatePassword(signUpRequest.getPassword())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Password does not meet security requirements"));
         }
+        /**
         if (!userServiceImpl.validateEmailForDomain(signUpRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new MessageResponse("domaine name not supported "));
-        }
+        }*/
 
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
@@ -163,6 +164,7 @@ public class AuthController {
         }
         user.setRoles(roles);
         userServiceImpl.saveUser(user);
+        /**
 
         // Send signup email to user with password change link
 
@@ -174,7 +176,7 @@ public class AuthController {
                 + "http://yourdomain.com/reset-password?email=" + signUpRequest.getEmail();
 
         sendingEmailService.sendEmail(to, subject, body);
-
+*/
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
     }

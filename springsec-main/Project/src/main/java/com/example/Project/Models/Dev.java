@@ -27,6 +27,4 @@ public class Dev {
     private String devComment;
     @Column(name = "`numBug`")
     private String numBug;
-
-
 }
