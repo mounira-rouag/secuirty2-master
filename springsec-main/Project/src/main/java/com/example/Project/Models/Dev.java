@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -27,4 +30,10 @@ public class Dev {
     private String devComment;
     @Column(name = "`numBug`")
     private String numBug;
+
+
+@ManyToOne
+@JoinColumn(name="id-cdc")
+    private CDC cdc;
+
 }

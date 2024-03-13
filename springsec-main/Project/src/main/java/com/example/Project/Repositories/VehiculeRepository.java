@@ -12,6 +12,6 @@ import java.util.List;
 
 @Repository
 public interface VehiculeRepository  extends JpaRepository<Vehicule, IdVeh> {
-    @Query("SELECT v FROM Vehicule v WHERE v.marque.idMarque = ?1")
-    List<Vehicule> findVehiculesByMarque(@Param("idMarque")int idMarque);
+    List<Vehicule> findByMarque(String marqueName); // Assuming a relationship with Marque entity
 }
+

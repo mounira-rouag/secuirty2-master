@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.security.Timestamp;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "`CDC`")
 @NoArgsConstructor
@@ -42,4 +45,6 @@ public class CDC {
 
     @Column(name = "`RefCDCArdia`", length = 10)
     private String refCdcArdia;
+    @OneToMany(mappedBy="cdc")
+    private List<Dev> dev;
 }

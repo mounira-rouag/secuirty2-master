@@ -15,9 +15,9 @@ public class VehiculeServiceImpl {
         this.vehiculeRepo = vehiculeRepo;
     }
 
-    public List<Vehicule> getVehByMarques(int idmarque) {
+    public List<Vehicule> getVehByMarques(String idmarque) {
+return vehiculeRepo.findByMarque(idmarque);
 
-        return vehiculeRepo.findVehiculesByMarque(idmarque);
 
     }
 }

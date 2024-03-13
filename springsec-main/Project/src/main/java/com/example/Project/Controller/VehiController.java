@@ -25,8 +25,9 @@ public class VehiController {
 
     /**find vehicues by marque */
 @GetMapping("/all-vehibymarque")
-    public List<Vehicule> findVehByMarque(int idmarque){
-     return vehiculeServieImpl.getVehByMarques(idmarque);
+    public List<Vehicule> findVehByMarque(String idmarque){
+     return
+             vehiculeServieImpl.getVehByMarques(idmarque);
 }
 
 
