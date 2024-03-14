@@ -1,12 +1,11 @@
 package com.example.Project.Controller;
 
+import com.example.Project.Models.Marque;
 import com.example.Project.Models.Vehicule;
+import com.example.Project.Repositories.MarqueRepository;
 import com.example.Project.Repositories.VehiculeRepository;
 import com.example.Project.Services.VehiculeServiceImpl;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,18 +16,21 @@ public class VehiController {
 
    private final VehiculeRepository vehiculeRepo;
     private final VehiculeServiceImpl vehiculeServieImpl;
-
-    public VehiController(VehiculeRepository vehiculeRepo, VehiculeServiceImpl vehiculeServieImpl) {
+private final MarqueRepository marqueRepo;
+    public VehiController(VehiculeRepository vehiculeRepo, VehiculeServiceImpl vehiculeServieImpl, MarqueRepository marqueRepo) {
         this.vehiculeRepo = vehiculeRepo;
         this.vehiculeServieImpl = vehiculeServieImpl;
+        this.marqueRepo = marqueRepo;
     }
 
     /**find vehicues by marque */
-@GetMapping("/all-vehibymarque")
-    public List<Vehicule> findVehByMarque(String idmarque){
-     return
-             vehiculeServieImpl.getVehByMarques(idmarque);
-}
+    @GetMapping("/by-marque/{marqueId}")
+    public List<Vehicule> getVehiculesByMarque(@PathVariable int marqueId) {
+
+        Marque marque = marqueRepo.getById(marqueId);
+        return vehiculeServieImpl.getVehiculesByMarque(marque);
+    }
+
 
 
 

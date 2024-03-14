@@ -35,5 +35,14 @@ public class Dev {
 @ManyToOne
 @JoinColumn(name="id-cdc")
     private CDC cdc;
-
+    @ManyToMany
+    @JoinTable(
+            name = "dev_vehicule",
+            joinColumns = @JoinColumn(name = "dev_id"),
+            inverseJoinColumns = {
+                    @JoinColumn(name = "vehicule_codeVeh"),
+                    @JoinColumn(name = "vehicule_nomVeh"),
+                    @JoinColumn(name = "vehicule_nominterne")}
+    )
+    private List<Vehicule> vehicules;
 }

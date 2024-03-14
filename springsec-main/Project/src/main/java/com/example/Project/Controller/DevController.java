@@ -1,17 +1,17 @@
 package com.example.Project.Controller;
 
-import com.example.Project.Models.CDC;
-import com.example.Project.Models.Dev;
-import com.example.Project.Models.Maj;
-import com.example.Project.Models.Sites;
+import com.example.Project.Models.*;
 import com.example.Project.Repositories.CDCRepository;
 import com.example.Project.Repositories.DevRepository;
+import com.example.Project.Repositories.MarqueRepository;
 import com.example.Project.Repositories.SitesRepository;
 import com.example.Project.Services.CDCServiceImpl;
 import com.example.Project.Services.DevServiceImpl;
+import com.example.Project.Services.VehiculeServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,14 +26,18 @@ public class DevController {
     private final CDCServiceImpl cdcServiceImpl;
     private final SitesRepository siteRepo;
     private final CDCRepository cdcRepo;
+    private final MarqueRepository marqueRepo;
+    private final VehiculeServiceImpl vehiculeServiceImpl;
 
 
-    public DevController(DevRepository devRepo, DevServiceImpl devServiceImpl, CDCServiceImpl cdcServiceImpl, SitesRepository siteRepo, CDCRepository cdcRepo) {
+    public DevController(DevRepository devRepo, DevServiceImpl devServiceImpl, CDCServiceImpl cdcServiceImpl, SitesRepository siteRepo, CDCRepository cdcRepo, MarqueRepository marqueRepo, VehiculeServiceImpl vehiculeServiceImpl) {
         this.devRepo = devRepo;
         this.devServiceImpl = devServiceImpl;
         this.cdcServiceImpl = cdcServiceImpl;
         this.siteRepo = siteRepo;
         this.cdcRepo = cdcRepo;
+        this.marqueRepo = marqueRepo;
+        this.vehiculeServiceImpl = vehiculeServiceImpl;
     }
 
 
@@ -65,25 +69,21 @@ public class DevController {
     @GetMapping("/dev/by-cdc/{id}")
     public List<Dev> findDevByCDC(@PathVariable int id) {
 
-        return devServiceImpl.getDevByCdcId(id);
-    }
-
-    @GetMapping("dev/filters")
-    public List<Dev> getFilteredDevs(
-            @RequestParam(value = "cdc", required = false) int idCdc
-    ) {
-        Optional<CDC> optionalCdc = cdcServiceImpl.findById(idCdc);
-        if (optionalCdc.isPresent()) {
-            CDC cdc = optionalCdc.get();  // Safe to call get() here
-            return cdcServiceImpl.findDevByCdc(cdc);
-        } else {
-            // Handle the case where no CDC is found (e.g., return empty list or error message)
-            return Collections.emptyList();  // Example: return an empty list
-        }
-    }
+        return devServiceImpl.getDevByCdcId(id);}
 
     @GetMapping("dev/dll-id")
     public List<Dev> getDevByDll(@RequestParam String dll){
         return devRepo.findByDll(dll);
     }
+    @GetMapping("/devs/by-marque/{marqueId}")
+    public List<Dev> getDevsByMarque(@PathVariable int marqueId) {
+        Marque marque = marqueRepo.getById(marqueId);
+        List<Vehicule> vehicules = vehiculeServiceImpl.getVehiculesByMarque(marque);
+        List<Dev> devs = new ArrayList<>();
+        for (Vehicule vehicule : vehicules) {
+            devs.addAll(devServiceImpl.getDevsByVehicule(vehicule));
+        }
+        return devs;
+    }
+
     }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -51,5 +52,9 @@ private String Profile;
         this.firstname = firstname;
         this.site=site;
     }
-
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = "user_devs",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "dev_id"))
+    private List<Dev> Devs ;
 }

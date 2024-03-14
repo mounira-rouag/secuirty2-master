@@ -1,8 +1,6 @@
 package com.example.Project.Repositories;
 
-import com.example.Project.Models.Dev;
-import com.example.Project.Models.Marque;
-import com.example.Project.Models.User;
+import com.example.Project.Models.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +14,7 @@ public interface DevRepository extends JpaRepository<Dev, Integer> {
     @Query("SELECT d FROM Dev d WHERE d.cdc.idCdc=:idCdc")
     List<Dev> findByCDC(@Param("idCdc")Integer idCdc);
  List<Dev> findByDll(String dll);
+ List<Dev > getDevByvehicules(Vehicule vehicule);
 
 
 }

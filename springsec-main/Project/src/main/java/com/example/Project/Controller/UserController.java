@@ -1,10 +1,12 @@
 package com.example.Project.Controller;
 
+import com.example.Project.Models.Dev;
 import com.example.Project.Models.Sites;
 import com.example.Project.Models.User;
 import com.example.Project.Repositories.UserInterface;
 import com.example.Project.Request.ChangePasswordRequest;
 import com.example.Project.Request.MessageResponse;
+import com.example.Project.Services.DevServiceImpl;
 import com.example.Project.Services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +23,13 @@ public class UserController {
 
     private final UserServiceImpl userServiceImp;
     private final UserInterface userRepository;
+    private final DevServiceImpl devServiceImpl;
 
-    public UserController(UserServiceImpl userServiceImp, UserInterface userRepository, UserInterface userRepository1) {
+    public UserController(UserServiceImpl userServiceImp, UserInterface userRepository, UserInterface userRepository1, DevServiceImpl devServiceImpl) {
         this.userServiceImp = userServiceImp;
 
         this.userRepository = userRepository1;
+        this.devServiceImpl = devServiceImpl;
     }
 
     @PatchMapping("/change-password")
@@ -68,5 +72,10 @@ public class UserController {
     @GetMapping("/find-all")
     public List<User> getAllUsers() {
         return userRepository.findAllByProfile("rc");
+    }
+    @GetMapping("/devs/findByUser/{userId}")
+    public ResponseEntity<List<Dev>> getDevsByUserId(@PathVariable int userId) {
+        List<Dev> devs = devServiceImpl.getDevsByUserId(userId);
+        return ResponseEntity.ok(devs);
     }
 }

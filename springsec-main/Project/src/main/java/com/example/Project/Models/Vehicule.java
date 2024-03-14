@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -46,7 +48,8 @@ public class Vehicule {
     private boolean avertissElec;
 
     @ManyToOne // ManyToOne relationship with Marque
-    @JoinColumn(name = "IdMarque") // Foreign key column mapping
+    @JoinColumn(name = "`IdMarque`") // Foreign key column mapping
     private Marque marque;
+
 
 }
